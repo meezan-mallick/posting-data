@@ -1,0 +1,37 @@
+<!-- Image and text -->
+<nav class="navbar navbar-dark bg-dark">
+	<a class="navbar-brand" href="#">
+		<h3>Add post</h3>
+	</a>
+</nav>
+
+<form #postForm="ngForm" (ngSubmit)="onCreatePost(postForm.value)" class="mt-3 p-4">
+	<div class="form-group">
+		<label for="exampleInputEmail1">Post Title</label>
+		<input
+     type="text"
+     class="form-control"
+     placeholder="Title"
+     id="title"
+     required
+     ngModel
+     name="title"
+     >
+  </div>
+		<div class="form-group">
+			<label for="exampleInputEmail1">Post Content</label>
+			<input
+      type="text"
+      class="form-control"
+      placeholder="Content"
+      id="content"
+      required
+      ngModel
+      name="content"
+      >
+  </div>
+
+			<button [disabled]="!postForm.valid" type="submit" class="btn btn-success mr-2">Save</button>
+			<button class="btn btn-primary mr-3">Fetch post</button>
+			<button  class="btn btn-danger">Delete</button>
+</form>
