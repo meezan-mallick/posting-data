@@ -1,6 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Component, OnInit, VERSION } from "@angular/core";
-import { subscribeOn } from "rxjs/operators";
+import { map } from "rxjs/operators";
+import { Post } from "./post.model";
+import { PostService } from "./post.service";
 
 @Component({
   selector: "my-app",
@@ -10,38 +12,39 @@ import { subscribeOn } from "rxjs/operators";
 export class AppComponent implements OnInit {
   name = "Angular " + VERSION.major;
 
-  constructor(private http: HttpClient) {}
+  loadedPost:Post[]=[];
+
+  constructor(private http: HttpClient, private PostService:PostService) {}
 
   ngOnInit() {
     this.FetchPosts();
   }
 
-  onCreatePost(postData: { title: string; content: string }) {
+ 
+
+  onCreatePost(postData:Post ) {
     // Send Http request
     // console.log(postData);
-    this.http
-      .post(
-        "https://angular-test-b2acb-default-rtdb.firebaseio.com/post.json",
-        postData
-      )
-      .subscribe(responseData => {
-        console.log("ost saved");
-      });
+    this.PostService.createPost(postData);
+    
   }
 
-  onFetchPosts() {
-    // Send Http request
-    this.FetchPosts();
-  }
 
   onClearPosts() {
-    // Send Http request
+    this.PostService.deletePost().subscribe(() => {
+      // console.log(posts);
+     this.loadedPost=[];
+
+    });
   }
+ 
 
   FetchPosts()
   {
-    this.http.get("https://angular-test-b2acb-default-rtdb.firebaseio.com/post.json").subscribe(posts => {
-      console.log(posts);
+    this.PostService.fetchPost().subscribe(posts => {
+      // console.log(posts);
+      this.loadedPost= posts;
+
     });
   }
 }
